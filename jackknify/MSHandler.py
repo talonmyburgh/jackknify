@@ -1,5 +1,6 @@
 import os
 import shutil
+import numpy as np
 from casacore.tables import table as ctab
 
 class MSWrapper:
@@ -42,3 +43,34 @@ class MSWrapper:
             shutil.rmtree(out_path)
         shutil.copytree(self.ms_path, out_path)
         return MSWrapper(out_path)
+    
+    @staticmethod
+    def create_test_ms(ms_path, n_rows=100, n_chan=16, n_pol=4):
+        """
+        Creates a mock Measurement Set table with a DATA column filled with 1s.
+        Useful for testing logic without a real MS.
+        """
+        if os.path.exists(ms_path):
+            print(f"Error, {ms_path} already exists. Require empty path destination to create new MS.")
+            
+        # Define a minimal descriptor sufficient for this tool
+        desc = {
+            'DATA': {
+                'comment': 'Mock Data',
+                'dataManagerGroup': 'StandardStMan',
+                'dataManagerType': 'StandardStMan',
+                'maxlen': 0,
+                'ndim': 2,
+                'option': 0,
+                # Shape is (n_chan, n_pol) per row
+                'shape': np.array([n_chan, n_pol], dtype=np.int32),
+                'valueType': 'complex'
+            }
+        }
+        
+        # Create the table
+        with ctab(ms_path, desc, nrow=n_rows, readonly=False, ack=False) as t:
+            # Create data: shape (Rows, Chan, Pol)
+            data = np.ones((n_rows, n_chan, n_pol), dtype=np.complex128)
+            t.putcol('DATA', data)
+            print(f"Created mock MS at {ms_path} with shape {data.shape}")

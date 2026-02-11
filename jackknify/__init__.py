@@ -1,4 +1,4 @@
-from .ImSettings import *
-from .MsManager import *
-from .Main import *
-from .Plot import * 
+import jax
+
+# Ensure JAX uses 64-bit precision globally
+jax.config.update('jax_enable_x64', True)

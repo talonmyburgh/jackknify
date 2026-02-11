@@ -1,6 +1,8 @@
 import os
 import click
 from tqdm import tqdm
+import jax.numpy as jnp
+import numpy as np
 from .MSHandler import MSWrapper
 from .Jackknife import jax_apply_flips
 from .CalcNoise import compute_noise_cube
@@ -9,6 +11,20 @@ from .CalcNoise import compute_noise_cube
 def cli():
     """JAXknife: A simple tool for visibility noise realizations."""
     pass
+
+@cli.command()
+@click.argument('ms_file', type=click.Path(exists=False)) # exists=False because we are creating it
+@click.option('--rows', default=100, help='Number of rows.')
+@click.option('--chans', default=16, help='Number of channels.')
+def make_ms(ms_file, rows, chans):
+    """
+    Creates a simple mock MS filled with 1s for testing.
+    """
+    try:
+        MSWrapper.create_test_ms(ms_file, n_rows=rows, n_chan=chans)
+        print("Test MS created successfully.")
+    except Exception as e:
+        print(f"Error creating MS: {e}")
 
 @cli.command()
 @click.argument('ms_file', type=click.Path(exists=True))
@@ -24,14 +40,14 @@ def realize(ms_file, col, n_samples, seed, mode, out_dir):
     """
     wrapper = MSWrapper(ms_file)
     print(f"Reading {col} from {ms_file}...")
-    original_data = wrapper.get_data(col)
+    original_data = jnp.array(wrapper.get_data(col))
     
     if mode == 'copy' and not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
     for i in tqdm(range(n_samples), desc="Generating Realizations"):
         current_seed = seed + i
-        jacked_data = jax_apply_flips(original_data, current_seed)
+        jacked_data = np.array(jax_apply_flips(original_data, current_seed))
         
         if mode == 'column':
             out_col_name = f"{col}_JACK_{i}"
