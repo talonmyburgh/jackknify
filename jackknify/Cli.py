@@ -29,14 +29,14 @@ def make_ms(ms_file, rows, chans):
 @cli.command()
 @click.argument('ms_file', type=click.Path(exists=True))
 @click.option('--col', default='DATA', help='Input data column name.')
-@click.option('--n-samples', '-n', default=1, help='Number of realizations.')
+@click.option('--n-samples', '-n', default=1, help='Number of realisations.')
 @click.option('--seed', default=42, help='Random seed.')
 @click.option('--mode', type=click.Choice(['column', 'copy']), default='column', 
               help='Output mode: "column" writes DATA_JACK_i cols to same MS, "copy" creates new MS files.')
 @click.option('--out-dir', default='./jackknife_output', help='Output directory (only for copy mode).')
-def realize(ms_file, col, n_samples, seed, mode, out_dir):
+def realise(ms_file, col, n_samples, seed, mode, out_dir):
     """
-    Generates jackknife noise realizations from an MS.
+    Generates jackknife noise realisations from an MS.
     """
     wrapper = MSWrapper(ms_file)
     print(f"Reading {col} from {ms_file}...")
@@ -45,7 +45,7 @@ def realize(ms_file, col, n_samples, seed, mode, out_dir):
     if mode == 'copy' and not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
-    for i in tqdm(range(n_samples), desc="Generating Realizations"):
+    for i in tqdm(range(n_samples), desc="Generating Realisations"):
         current_seed = seed + i
         jacked_data = np.array(jax_apply_flips(original_data, current_seed))
         

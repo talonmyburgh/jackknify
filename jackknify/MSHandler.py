@@ -52,8 +52,9 @@ class MSWrapper:
         """
         if os.path.exists(ms_path):
             print(f"Error, {ms_path} already exists. Require empty path destination to create new MS.")
+            return
             
-        # Define a minimal descriptor sufficient for this tool
+        # Define a minimal descriptor sufficient for this tool - opposite to np layout since casa uses fortran ordering
         desc = {
             'DATA': {
                 'comment': 'Mock Data',
@@ -62,9 +63,8 @@ class MSWrapper:
                 'maxlen': 0,
                 'ndim': 2,
                 'option': 0,
-                # Shape is (n_chan, n_pol) per row
-                'shape': np.array([n_chan, n_pol], dtype=np.int32),
-                'valueType': 'complex'
+                'shape': np.array([n_pol, n_chan], dtype=np.int32),
+                'valueType': 'complex' # defaults to complex64 (single precision)
             }
         }
         
