@@ -18,7 +18,7 @@ File = NewType("File", Path)
 def noise(
     folder_path: Annotated[
         Directory, 
-        typer.Argument(help="Folder containing input FITS files.")
+        typer.Argument(..., help="Folder containing input FITS files.")
     ],
     out: Annotated[
         File, 

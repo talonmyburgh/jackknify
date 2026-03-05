@@ -1,0 +1,20 @@
+cabs:
+  noise:
+    flavour: python
+    command: jackknify.core.noise.noise
+    name: noise
+    info:
+      Calculates a 'noise' cube (std dev) from a folder of FITS files.
+    inputs:
+      folder-path:
+        info:
+          Folder containing input FITS files.
+        dtype: Directory
+        required: true
+        policies:
+          positional: true
+    outputs:
+      out:
+        dtype: File
+        info:
+          The resulting noise cube FITS file.

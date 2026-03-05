@@ -12,7 +12,7 @@ MS = NewType("MS", Path)
 def make_ms(
     ms_file: Annotated[
         MS, 
-        typer.Argument(help="Path to create the mock MS.")
+        typer.Argument(..., help="Path to create the mock MS.")
     ],
     rows: Annotated[int, typer.Option()] = 100,
     chans: Annotated[int, typer.Option()] = 16,

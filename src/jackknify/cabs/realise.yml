@@ -1,0 +1,43 @@
+cabs:
+  realise:
+    flavour: python
+    command: jackknify.core.realise.realise
+    name: realise
+    info:
+      Generates jackknife noise realisations from a Measurement Set.
+    inputs:
+      ms-file:
+        info:
+          Input Measurement Set.
+        dtype: MS
+        required: true
+        policies:
+          positional: true
+      col:
+        info:
+          Input data column name.
+        default: DATA
+      n-samples:
+        info:
+          Number of realisations.
+        dtype: int
+        default: 1
+      seed:
+        info:
+          Random seed.
+        dtype: int
+        default: 42
+      mode:
+        info:
+          Output mode - column (modify in-place) or copy (new files).
+        default: column
+      out-dir:
+        info:
+          Output directory (only for copy mode).
+        dtype: Optional[Directory]
+    outputs:
+      out_dir:
+        dtype: Directory
+        required: false
+        info:
+          Output directory (only used if mode is 'copy').

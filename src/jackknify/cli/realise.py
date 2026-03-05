@@ -20,7 +20,7 @@ Directory = NewType("Directory", Path)
 def realise(
     ms_file: Annotated[
         MS, 
-        typer.Argument(help="Input Measurement Set.")
+        typer.Argument(..., help="Input Measurement Set.")
     ],
     col: Annotated[
         str, 
@@ -36,7 +36,7 @@ def realise(
     ] = 42,
     mode: Annotated[
         str, 
-        typer.Option(help="Output mode: 'column' (modify in-place) or 'copy' (new files).")
+        typer.Option(help="Output mode - column (modify in-place) or copy (new files).")
     ] = "column",
     out_dir: Annotated[
         Optional[Directory], 

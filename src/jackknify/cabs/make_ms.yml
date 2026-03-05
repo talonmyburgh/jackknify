@@ -1,0 +1,22 @@
+cabs:
+  make_ms:
+    flavour: python
+    command: jackknify.core.make_test_ms.make_ms
+    name: make_ms
+    info:
+      Creates a simple mock MS filled with 1s for testing.
+    inputs:
+      ms-file:
+        info:
+          Path to create the mock MS.
+        dtype: MS
+        required: true
+        policies:
+          positional: true
+      rows:
+        dtype: int
+        default: 100
+      chans:
+        dtype: int
+        default: 16
+    outputs: {}
