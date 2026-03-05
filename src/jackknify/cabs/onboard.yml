@@ -2,6 +2,7 @@ cabs:
   onboard:
     flavour: python
     command: jackknify.core.onboard.onboard
+    image: ghcr.io/talonmyburgh/jackknify:latest
     name: onboard
     info:
       Print setup instructions for CI/CD, PyPI publishing, and GitHub configuration.
