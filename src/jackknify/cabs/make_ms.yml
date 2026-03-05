@@ -2,6 +2,7 @@ cabs:
   make_ms:
     flavour: python
     command: jackknify.core.make_test_ms.make_ms
+    image: ghcr.io/talonmyburgh/jackknify:latest
     name: make_ms
     info:
       Creates a simple mock MS filled with 1s for testing.
