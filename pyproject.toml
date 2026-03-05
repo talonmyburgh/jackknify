@@ -1,0 +1,25 @@
+[project]
+name = "jackknify"
+version = "0.2.0"
+description = "Jackknifing interferometric datasets"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "jax[cpu]", # Or jax[cuda] if appropriate
+    "python-casacore",
+    "astropy",
+    "tqdm",
+    "typer>=0.12.0",      # Switched from click
+    "hip-cargo",          # Required for decorators
+]
+
+[project.scripts]
+jackknify = "jackknify.cli:app"  # Update entry point
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
