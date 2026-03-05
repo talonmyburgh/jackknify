@@ -1,7 +1,7 @@
 import typer
-from .realize import realize
+from .realise import realise
 from .noise import noise
-from .make_ms import make_ms
+from .make_test_ms import make_ms
 
 app = typer.Typer(
     name="jackknify",
@@ -9,6 +9,6 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
-app.command(name="realize")(realize)
+app.command(name="realise")(realise)
 app.command(name="noise")(noise)
-app.command(name="make-ms")(make_ms)
+app.command(name="make-test-ms")(make_ms)
