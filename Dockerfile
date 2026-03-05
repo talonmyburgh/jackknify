@@ -2,15 +2,15 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+# Install uv for fast package installation
+COPY --from=ghcr.io/astral-sh/uv:0.9.8 /uv /usr/local/bin/uv
 
-# Copy package
+# Copy package files
 COPY pyproject.toml README.md ./
 COPY src/ src/
 
-# Install package (system-wide)
-RUN uv pip install --system --no-cache .
+# Install package with full dependencies using uv (much faster than pip)
+RUN uv pip install --system --no-cache ".[full]"
 
-# Default command
+# Make CLI available
 CMD ["jackknify", "--help"]

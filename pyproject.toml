@@ -1,10 +1,22 @@
 [project]
 name = "jackknify"
 version = "0.2.0"
-description = "Jackknifing interferometric datasets"
+description = "A Python-based package for jackknifing Measurement Set visibilities to create noise realisations"
 readme = "README.md"
 requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Author Name", email = "myburgh.talon@gmail.com" }
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 dependencies = [
+    "hip-cargo>=0.1.3",
     "numpy",
     "jax[cpu]", # Or jax[cuda] if appropriate
     "python-casacore",
@@ -14,12 +26,56 @@ dependencies = [
     "hip-cargo",          # Required for decorators
 ]
 
+[project.urls]
+Homepage = "https://github.com/talonmyburgh/jackknify"
+Repository = "https://github.com/talonmyburgh/jackknify"
+"Bug Tracker" = "https://github.com/talonmyburgh/jackknify/issues"
+
 [project.scripts]
-jackknify = "jackknify.cli:app"  # Update entry point
+jackknify = "jackknify.cli:app"
 
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+# NOTE: This uv_build constraint is intentionally aligned with hip-cargo's own pyproject.toml.
+# If you bump uv_build in hip-cargo, update this template constraint to match.
+requires = ["uv_build>=0.8.3,<0.11.0"]
+build-backend = "uv_build"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Tests that take more time to run",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.9.0",
+    "tbump>=6.11.0",
+    "pre-commit>=4.0.0",
+]
+test = [
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+]
