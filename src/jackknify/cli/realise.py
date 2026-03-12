@@ -37,8 +37,8 @@ def realise(
 
     from tqdm import tqdm
 
-    from jackknify.core.Jackknife import jax_apply_flips
-    from jackknify.core.MSHandler import MSWrapper
+    from jackknify.src.jackknify.core.jackknife import jax_apply_flips
+    from jackknify.src.jackknify.core.ms_handler import MSWrapper
 
     wrapper = MSWrapper(str(ms_file))
     print(f"Reading {col} from {ms_file}...")

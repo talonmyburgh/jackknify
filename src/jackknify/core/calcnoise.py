@@ -1,7 +1,9 @@
 import os
+
 import numpy as np
 from tqdm import tqdm
-from .FitsHandler import FitsWrapper
+
+from .fits_handler import FitsWrapper
 
 
 def compute_noise_cube(folder_path, out_file):

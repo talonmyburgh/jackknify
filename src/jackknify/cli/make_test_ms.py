@@ -16,7 +16,7 @@ def make_ms(
     rows: Annotated[int, typer.Option()] = 100,
     chans: Annotated[int, typer.Option()] = 16,
 ):
-    from jackknify.core.MSHandler import MSWrapper
+    from jackknify.src.jackknify.core.ms_handler import MSWrapper
 
     try:
         MSWrapper.create_test_ms(str(ms_file), n_rows=rows, n_chan=chans)

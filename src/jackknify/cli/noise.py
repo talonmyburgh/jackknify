@@ -24,7 +24,7 @@ def noise(
     """
     Calculates a 'noise' cube (std dev) from a folder of FITS files.
     """
-    from jackknify.core.CalcNoise import compute_noise_cube
+    from jackknify.src.jackknify.core.calcnoise import compute_noise_cube
 
     try:
         compute_noise_cube(str(folder_path), str(out))
