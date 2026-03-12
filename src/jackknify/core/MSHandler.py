@@ -3,10 +3,12 @@ import shutil
 import numpy as np
 from casacore.tables import table as ctab
 
+
 class MSWrapper:
     """
     Handles interaction with the Measurement Set using casacore.tables.
     """
+
     def __init__(self, ms_path):
         self.ms_path = ms_path
 
@@ -19,7 +21,7 @@ class MSWrapper:
 
     def write_column(self, col_name, data, desc_template_col="DATA"):
         """
-        Writes data to a specific column. Creates the column if it doesn't exist 
+        Writes data to a specific column. Creates the column if it doesn't exist
         using the template column description.
         """
         with ctab(self.ms_path, readonly=False, ack=False) as t:
@@ -28,11 +30,11 @@ class MSWrapper:
             else:
                 desc = t.getcoldesc(desc_template_col)
                 desc["name"] = col_name
-                desc['comment'] = 'Jackknife_Realization'
-                
+                desc["comment"] = "Jackknife_Realization"
+
                 # Handle potential tiled shape issues if present in descriptor
-                if 'ndim' in desc and desc['ndim'] == -1:
-                    pass 
+                if "ndim" in desc and desc["ndim"] == -1:
+                    pass
 
                 t.addcols(desc)
                 t.putcol(col_name, data)
@@ -43,7 +45,7 @@ class MSWrapper:
             shutil.rmtree(out_path)
         shutil.copytree(self.ms_path, out_path)
         return MSWrapper(out_path)
-    
+
     @staticmethod
     def create_test_ms(ms_path, n_rows=100, n_chan=16, n_pol=4):
         """
@@ -53,24 +55,24 @@ class MSWrapper:
         if os.path.exists(ms_path):
             print(f"Error, {ms_path} already exists. Require empty path destination to create new MS.")
             return
-            
+
         # Define a minimal descriptor sufficient for this tool - opposite to np layout since casa uses fortran ordering
         desc = {
-            'DATA': {
-                'comment': 'Mock Data',
-                'dataManagerGroup': 'StandardStMan',
-                'dataManagerType': 'StandardStMan',
-                'maxlen': 0,
-                'ndim': 2,
-                'option': 0,
-                'shape': np.array([n_pol, n_chan], dtype=np.int32),
-                'valueType': 'complex' # defaults to complex64 (single precision)
+            "DATA": {
+                "comment": "Mock Data",
+                "dataManagerGroup": "StandardStMan",
+                "dataManagerType": "StandardStMan",
+                "maxlen": 0,
+                "ndim": 2,
+                "option": 0,
+                "shape": np.array([n_pol, n_chan], dtype=np.int32),
+                "valueType": "complex",  # defaults to complex64 (single precision)
             }
         }
-        
+
         # Create the table
         with ctab(ms_path, desc, nrow=n_rows, readonly=False, ack=False) as t:
             # Create data: shape (Rows, Chan, Pol)
             data = np.ones((n_rows, n_chan, n_pol), dtype=np.complex128)
-            t.putcol('DATA', data)
+            t.putcol("DATA", data)
             print(f"Created mock MS at {ms_path} with shape {data.shape}")

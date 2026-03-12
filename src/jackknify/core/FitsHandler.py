@@ -1,10 +1,12 @@
 import os
 from astropy.io import fits
 
+
 class FitsWrapper:
     """
     Handles interaction with FITS files using astropy.
     """
+
     def __init__(self, filepath):
         self.filepath = filepath
 
