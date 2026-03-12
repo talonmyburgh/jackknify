@@ -1,0 +1,86 @@
+_include:
+  - (jackknify.cabs)realise.yml
+  - (jackknify.cabs)noise.yml
+  - (cultcargo):
+    - wsclean.yml
+
+make-noise-map:
+  name: make-noise-map
+  info: "Generate noise realisations, image them, and stack into a noise map"
+
+  inputs:
+    ms_file:
+      info: "Input Measurement Set."
+      dtype: MS
+      required: true
+      policies:
+        positional: true
+    data_column:
+      info: "Data column to use for imaging."
+      dtype: str
+      default: DATA
+      required: false
+    n_samples:
+      info: "Number of jackknife realisations."
+      dtype: int
+      default: 5
+    seed:
+      info: "Random seed for realisations."
+      dtype: int
+      default: 42
+  
+  outputs:
+    outdir:
+      info: "The directory to which all output images will be written"
+      dtype: Directory
+      default: "noise_images"
+      required: false
+
+  aliases:
+    prefix:
+    - image.prefix
+    size:
+    - image.size
+    scale:
+    - image.scale
+    niter:
+    - image.niter
+
+  for_loop:
+    var: jack_idx
+    over: n_samples
+    scatter: 4
+  
+  assign:
+    # Set up a base prefix using Stimela macros based on the MS filename
+    ms_basename: =STRIPEXT(BASENAME(recipe.ms_file))
+    unique_column: '{recipe.data_column}_JACK_{recipe.jack_idx}'
+    img_prefix: '{recipe.outdir}/{recipe.ms_basename}_jack_{recipe.jack_idx}'
+    output_img: '{recipe.outdir}/{recipe.ms_basename}_noise_cube.fits'
+
+  steps:
+    generate_realisations:
+      info: "Generate jackknife noise realisations as new columns in the MS."
+      cab: realise
+      params:
+        ms-file: =recipe.ms_file
+        col: =recipe.data_column
+        n-samples: =recipe.n_samples
+        seed: =recipe.seed
+        mode: column #this will create new columns in the original MS
+
+    image:
+      info: "Iterate over the generated columns and image each realisation."
+      cab: wsclean
+      params:
+        ms: =recipe.ms_file
+        # construct the column string dynamically
+        column: =recipe.unique_column
+
+    compute:
+      info: "Compute the noise cube/map from the resulting images."
+      cab: noise
+      params:
+        folder-path: =recipe.outdir
+        # Output directly into the outdir
+        out: =recipe.output_img
