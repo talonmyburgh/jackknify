@@ -5,7 +5,7 @@ cabs:
     name: noise
     info:
       Calculates a 'noise' cube (std dev) from a folder of FITS files.
-    image: ghcr.io/talonmyburgh/jackknify:bug-fixes
+    image: ghcr.io/talonmyburgh/jackknify:finalbugfixes
     inputs:
       folder-path:
         info:
