@@ -5,7 +5,7 @@ cabs:
     name: make_ms
     info:
       Creates a simple mock MS filled with 1s for testing.
-    image: ghcr.io/talonmyburgh/jackknify:ruff_nonsense
+    image: ghcr.io/talonmyburgh/jackknify:latest
     inputs:
       ms-file:
         info:
