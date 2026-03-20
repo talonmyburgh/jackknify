@@ -5,6 +5,6 @@ cabs:
     name: onboard
     info:
       Print setup instructions for CI/CD, PyPI publishing, and GitHub configuration.
-    image: ghcr.io/talonmyburgh/jackknify:bugfix2
+    image: ghcr.io/talonmyburgh/jackknify:latest
     inputs: {}
     outputs: {}
