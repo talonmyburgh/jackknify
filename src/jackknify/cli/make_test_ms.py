@@ -9,10 +9,10 @@ from hip_cargo.utils.decorators import stimela_cab, stimela_output
     info="Creates a simple mock MS filled with 1s for testing.",
 )
 @stimela_output(
-    name="out_ms",  # Unique name so it doesn't conflict with the input
+    name="out_ms",
     dtype="MS",
     info="The resulting mock Measurement Set.",
-    implicit="{ms-file}",  # This links the output path to the ms-file input!
+    implicit="{ms_file}",
 )
 def make_ms(
     ms_file: Annotated[str, typer.Argument(..., help="Path to create the mock MS.")],
