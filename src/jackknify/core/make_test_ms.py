@@ -1,4 +1,4 @@
-from jackknify.core.MSHandler import MSWrapper
+from jackknify.core.ms_handler import MSWrapper
 
 
 def make_ms(ms_file: str, rows: int, chans: int):

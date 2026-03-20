@@ -1,4 +1,4 @@
-from jackknify.core.CalcNoise import compute_noise_cube
+from jackknify.core.calcnoise import compute_noise_cube
 
 
 def noise(folder_path: str, out: str):
