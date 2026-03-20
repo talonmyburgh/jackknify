@@ -24,10 +24,6 @@ def noise(
     """
     Calculates a 'noise' cube (std dev) from a folder of FITS files.
     """
-    from jackknify.src.jackknify.core.calcnoise import compute_noise_cube
+    from jackknify.core.noise import noise as noise_core
 
-    try:
-        compute_noise_cube(str(folder_path), str(out))
-        print(f"Noise cube written to {out}")
-    except Exception as e:
-        print(f"Error: {e}")
+    noise_core(folder_path=str(folder_path), out=str(out))

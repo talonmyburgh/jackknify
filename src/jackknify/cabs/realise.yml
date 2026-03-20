@@ -2,10 +2,10 @@ cabs:
   realise:
     flavour: python
     command: jackknify.core.realise.realise
-    image: ghcr.io/talonmyburgh/jackknify:latest
     name: realise
     info:
       Generates jackknife noise realisations from a Measurement Set.
+    image: ghcr.io/talonmyburgh/jackknify:recipe_dev
     inputs:
       ms-file:
         info:

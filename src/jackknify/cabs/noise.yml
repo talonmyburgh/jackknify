@@ -2,10 +2,10 @@ cabs:
   noise:
     flavour: python
     command: jackknify.core.noise.noise
-    image: ghcr.io/talonmyburgh/jackknify:latest
     name: noise
     info:
       Calculates a 'noise' cube (std dev) from a folder of FITS files.
+    image: ghcr.io/talonmyburgh/jackknify:recipe_dev
     inputs:
       folder-path:
         info:
