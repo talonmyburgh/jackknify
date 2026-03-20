@@ -3,8 +3,8 @@ from typing import Optional
 
 from tqdm import tqdm
 
-from jackknify.core.Jackknife import jax_apply_flips
-from jackknify.core.MSHandler import MSWrapper
+from jackknify.core.jackknife import jax_apply_flips
+from jackknify.core.ms_handler import MSWrapper
 
 
 def realise(ms_file: str, col: str, n_samples: int, seed: int, mode: str, out_dir: Optional[str] = None):
