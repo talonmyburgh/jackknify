@@ -7,6 +7,7 @@ from hip_cargo.utils.decorators import stimela_cab, stimela_output
 Directory = NewType("Directory", Path)
 File = NewType("File", Path)
 
+
 @stimela_cab(
     name="noise",
     info="Calculates a 'noise' cube (std dev) from a folder of FITS files.",
@@ -25,7 +26,4 @@ def noise(
     """
     from jackknify.core.noise import noise as noise_core
 
-    noise_core(
-        folder_path=str(folder_path),
-        out=str(out)
-    )
+    noise_core(folder_path=str(folder_path), out=str(out))

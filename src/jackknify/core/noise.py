@@ -1,5 +1,6 @@
 from jackknify.core.CalcNoise import compute_noise_cube
 
+
 def noise(folder_path: str, out: str):
     """Calculates a 'noise' cube (std dev) from a folder of FITS files."""
     try:

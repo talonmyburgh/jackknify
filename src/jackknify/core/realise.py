@@ -1,17 +1,13 @@
 import os
 from typing import Optional
+
 from tqdm import tqdm
+
 from jackknify.core.Jackknife import jax_apply_flips
 from jackknify.core.MSHandler import MSWrapper
 
-def realise(
-    ms_file: str, 
-    col: str, 
-    n_samples: int, 
-    seed: int, 
-    mode: str, 
-    out_dir: Optional[str] = None
-):
+
+def realise(ms_file: str, col: str, n_samples: int, seed: int, mode: str, out_dir: Optional[str] = None):
     """Generates jackknife noise realisations from an MS."""
     wrapper = MSWrapper(ms_file)
     print(f"Reading {col} from {ms_file}...")

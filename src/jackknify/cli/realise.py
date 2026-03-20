@@ -8,6 +8,7 @@ from hip_cargo.utils.decorators import stimela_cab, stimela_output
 MS = NewType("MS", Path)
 Directory = NewType("Directory", Path)
 
+
 @stimela_cab(
     name="realise",
     info="Generates jackknife noise realisations from a Measurement Set.",
