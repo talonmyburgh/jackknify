@@ -5,7 +5,7 @@ cabs:
     name: realise
     info:
       Generates jackknife noise realisations from a Measurement Set.
-    image: ghcr.io/talonmyburgh/jackknify:recipe_dev
+    image: ghcr.io/talonmyburgh/jackknify:latest
     inputs:
       ms-file:
         info:
