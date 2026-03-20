@@ -8,7 +8,6 @@ from hip_cargo.utils.decorators import stimela_cab, stimela_output
 MS = NewType("MS", Path)
 Directory = NewType("Directory", Path)
 
-
 @stimela_cab(
     name="realise",
     info="Generates jackknife noise realisations from a Measurement Set.",
@@ -32,34 +31,14 @@ def realise(
     """
     Generates jackknife noise realisations from an MS.
     """
-    # Lazy import to keep CLI fast
-    import os
+    # Lazy import to keep CLI fast and isolate logic
+    from jackknify.core.realise import realise as realise_core
 
-    from tqdm import tqdm
-
-    from jackknify.core.Jackknife import jax_apply_flips
-    from jackknify.core.MSHandler import MSWrapper
-
-    wrapper = MSWrapper(str(ms_file))
-    print(f"Reading {col} from {ms_file}...")
-    original_data = wrapper.get_data(col)
-
-    if mode == "copy" and out_dir:
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-
-    for i in tqdm(range(n_samples), desc="Generating realisations"):
-        current_seed = seed + i
-        jacked_data = jax_apply_flips(original_data, current_seed)
-
-        if mode == "column":
-            out_col_name = f"{col}_JACK_{i}"
-            wrapper.write_column(out_col_name, jacked_data, desc_template_col=col)
-
-        elif mode == "copy" and out_dir:
-            ms_name = os.path.basename(ms_file).replace(".ms", "")
-            new_ms_path = os.path.join(out_dir, f"{ms_name}_JACK_{i}.ms")
-            new_wrapper = wrapper.create_copy(new_ms_path)
-            new_wrapper.write_column("DATA", jacked_data, desc_template_col=col)
-
-    print("Done.")
+    realise_core(
+        ms_file=str(ms_file),
+        col=col,
+        n_samples=n_samples,
+        seed=seed,
+        mode=mode,
+        out_dir=str(out_dir) if out_dir else None,
+    )

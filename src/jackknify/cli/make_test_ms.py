@@ -6,7 +6,6 @@ from hip_cargo.utils.decorators import stimela_cab
 
 MS = NewType("MS", Path)
 
-
 @stimela_cab(
     name="make_ms",
     info="Creates a simple mock MS filled with 1s for testing.",
@@ -16,10 +15,13 @@ def make_ms(
     rows: Annotated[int, typer.Option()] = 100,
     chans: Annotated[int, typer.Option()] = 16,
 ):
-    from jackknify.core.MSHandler import MSWrapper
+    """
+    Creates a simple mock MS filled with 1s for testing.
+    """
+    from jackknify.core.make_test_ms import make_ms as make_ms_core
 
-    try:
-        MSWrapper.create_test_ms(str(ms_file), n_rows=rows, n_chan=chans)
-        print("Test MS created successfully.")
-    except Exception as e:
-        print(f"Error creating MS: {e}")
+    make_ms_core(
+        ms_file=str(ms_file),
+        rows=rows,
+        chans=chans
+    )
