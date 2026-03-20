@@ -5,7 +5,7 @@ cabs:
     name: make_ms
     info:
       Creates a simple mock MS filled with 1s for testing.
-    image: ghcr.io/talonmyburgh/jackknify:latest
+    image: ghcr.io/talonmyburgh/jackknify:bugfix2
     inputs:
       ms-file:
         info:
@@ -24,4 +24,4 @@ cabs:
         dtype: MS
         info:
           The resulting mock Measurement Set.
-        implicit: '{ms-file}'  # This links the output path to the ms-file input!
+        implicit: '{ms_file}'
