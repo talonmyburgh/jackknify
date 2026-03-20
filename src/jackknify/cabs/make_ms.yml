@@ -10,7 +10,6 @@ cabs:
       ms-file:
         info:
           Path to create the mock MS.
-        dtype: MS
         required: true
         policies:
           positional: true
