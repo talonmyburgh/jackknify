@@ -2,61 +2,41 @@ from pathlib import Path
 from typing import Annotated, Literal, NewType
 
 import typer
-from hip_cargo import StimelaMeta, parse_upath, stimela_cab, stimela_output
+from hip_cargo import StimelaMeta, stimela_cab, stimela_output
 
-Directory = NewType("Directory", Path)
 MS = NewType("MS", Path)
 
 
 @stimela_cab(
-    name="realise",
-    info="Generates jackknife noise realisations from a Measurement Set.",
+    name="make_ms",
+    info="Creates a simple mock MS filled with 1s for testing.",
 )
 @stimela_output(
-    dtype="Directory",
-    name="out_dir",
-    info="Output directory (only used if mode is 'copy').",
+    dtype="MS",
+    name="out_ms",
+    info="The resulting mock Measurement Set.",
+    implicit="{ms_file}",
 )
-def realise(
+def make_ms(
     ms_file: Annotated[
-        MS,
+        str,
         typer.Option(
             ...,
-            parser=parse_upath,
-            help="Input Measurement Set.",
+            help="Path to create the mock MS.",
         ),
     ],
-    col: Annotated[
-        str,
-        typer.Option(
-            help="Input data column name.",
-        ),
-    ] = "DATA",
-    n_samples: Annotated[
+    rows: Annotated[
         int,
         typer.Option(
-            help="Number of realisations.",
+            help="",
         ),
-    ] = 1,
-    seed: Annotated[
+    ] = 100,
+    chans: Annotated[
         int,
         typer.Option(
-            help="Random seed.",
+            help="",
         ),
-    ] = 42,
-    mode: Annotated[
-        str,
-        typer.Option(
-            help="Output mode - column (modify in-place) or copy (new files).",
-        ),
-    ] = "column",
-    out_dir: Annotated[
-        Directory | None,
-        typer.Option(
-            parser=parse_upath,
-            help="Output directory (only for copy mode).",
-        ),
-    ] = None,
+    ] = 16,
     backend: Annotated[
         Literal["auto", "native", "apptainer", "singularity", "docker", "podman"],
         typer.Option(
@@ -77,7 +57,7 @@ def realise(
     ] = False,
 ):
     """
-    Generates jackknife noise realisations from a Measurement Set.
+    Creates a simple mock MS filled with 1s for testing.
     """
     if backend == "native" or backend == "auto":
         try:
@@ -85,28 +65,22 @@ def realise(
             from hip_cargo.utils.runner import preflight_remote_must_exist  # noqa: E402
 
             preflight_remote_must_exist(
-                realise,
+                make_ms,
                 dict(
                     ms_file=ms_file,
-                    col=col,
-                    n_samples=n_samples,
-                    seed=seed,
-                    mode=mode,
-                    out_dir=out_dir,
+                    rows=rows,
+                    chans=chans,
                 ),
             )
 
             # Lazy import the core implementation
-            from jackknify.core.realise import realise as realise_core  # noqa: E402
+            from jackknify.core.make_ms import make_ms as make_ms_core  # noqa: E402
 
             # Call the core function with all parameters
-            realise_core(
+            make_ms_core(
                 ms_file,
-                col=col,
-                n_samples=n_samples,
-                seed=seed,
-                mode=mode,
-                out_dir=out_dir,
+                rows=rows,
+                chans=chans,
             )
             return
         except ImportError:
@@ -122,14 +96,11 @@ def realise(
         raise RuntimeError("No Container URL in jackknify metadata.")
 
     run_in_container(
-        realise,
+        make_ms,
         dict(
             ms_file=ms_file,
-            col=col,
-            n_samples=n_samples,
-            seed=seed,
-            mode=mode,
-            out_dir=out_dir,
+            rows=rows,
+            chans=chans,
         ),
         image=image,
         backend=backend,

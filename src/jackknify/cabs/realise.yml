@@ -39,6 +39,5 @@ cabs:
     outputs:
       out_dir:
         dtype: Directory
-        required: false
         info:
           Output directory (only used if mode is 'copy').
