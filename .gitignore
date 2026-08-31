@@ -46,3 +46,24 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# --- jackknify-specific ---
+# Retained from the pre-conversion .gitignore; the hip-cargo template covers
+# only generic Python/tooling paths.
+
+# Secrets
+.env
+
+# Local run artefacts
+data/
+output/
+plots/
+*.log
+
+# Notebooks (see docs/notebooks/)
+.ipynb_checkpoints
+docs/notebooks/testing.ipynb
+
+# Type checkers / property testing
+.mypy_cache/
+.hypothesis/
