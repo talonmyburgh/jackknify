@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 from tqdm import tqdm
 
@@ -7,8 +6,17 @@ from jackknify.core.jackknife import jax_apply_flips
 from jackknify.core.ms_handler import MSWrapper
 
 
-def realise(ms_file: str, col: str, n_samples: int, seed: int, mode: str, out_dir: Optional[str] = None):
+def realise(
+    ms_file: str | os.PathLike,
+    col: str,
+    n_samples: int,
+    seed: int,
+    mode: str,
+    out_dir: str | os.PathLike | None = None,
+):
     """Generates jackknife noise realisations from an MS."""
+    ms_file = str(ms_file)
+    out_dir = str(out_dir) if out_dir is not None else None
     wrapper = MSWrapper(ms_file)
     print(f"Reading {col} from {ms_file}...")
     original_data = wrapper.get_data(col)
