@@ -28,13 +28,13 @@ def make_ms(
     rows: Annotated[
         int,
         typer.Option(
-            help="",
+            help="Number of rows in the mock MS.",
         ),
     ] = 100,
     chans: Annotated[
         int,
         typer.Option(
-            help="",
+            help="Number of frequency channels in the mock MS.",
         ),
     ] = 16,
     backend: Annotated[

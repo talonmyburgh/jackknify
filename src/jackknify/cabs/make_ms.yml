@@ -14,9 +14,13 @@ cabs:
         policies:
           positional: true
       rows:
+        info:
+          Number of rows in the mock MS.
         dtype: int
         default: 100
       chans:
+        info:
+          Number of frequency channels in the mock MS.
         dtype: int
         default: 16
     outputs:

@@ -54,14 +54,17 @@ options rather than positionally:
     jackknify noise --folder-path noise_images --out noise_cube.fits
     jackknify make-ms --ms-file mock.ms --rows 100 --chans 16
 
-Path parameters accept remote URIs (``s3://``, ``gs://``, ``az://``) as well
-as local paths.
+Path parameters are parsed with hip-cargo's ``parse_upath``, so remote URIs
+(``s3://``, ``gs://``, ``az://``) are accepted at the CLI boundary. Note that
+the ``core`` implementations currently read and write through local filesystem
+calls (``os.listdir``, ``casacore.tables.table``), so **remote paths are not
+yet supported end to end** — pass local paths for now.
 
 **Note:** prior to the hip-cargo 0.3.0 conversion, ``ms-file`` and
 ``folder-path`` were positional arguments and ``make-ms`` was called
 ``make-test-ms``.
 
-## Dependancies
+## Dependencies
 
 ``jackknify`` uses ``casatask`` and ``casatools`` to interface with CASA measurements. ``casatask`` and ``casatools`` requires ``casadata`` to load. Sadly, this is a  ~350 MB sized file making the installment a bit slow. Further, when performing line searches, we make use of the package ``interferopy``, which is a Python-based package for common tasks used in the observational radio/mm interferometry data analysis.
 
