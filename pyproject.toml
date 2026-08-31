@@ -4,26 +4,36 @@ version = "0.2.0"
 description = "A Python-based package for jackknifing Measurement Set visibilities to create noise realisations"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
-    { name = "Author Name", email = "myburgh.talon@gmail.com" }
+    { name = "Talon Myburgh", email = "myburgh.talon@gmail.com" }
 ]
 classifiers = [
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "hip-cargo>=0.1.3",
+    "hip-cargo>=0.3.0",
+]
+
+# Lightweight install (default):  pip install jackknify
+#     Only pulls hip-cargo + typer. Suitable for cab consumers (e.g. stimela)
+#     and for running commands via container fallback. Generated CLI wrappers
+#     lazy-import core/, so when heavy deps are missing the wrapper drops into
+#     run_in_container() automatically.
+# Full install:                    pip install jackknify[full]
+#     Adds the heavy runtime deps that core/ implementations need to execute
+#     natively.
+[project.optional-dependencies]
+full = [
     "numpy",
-    "jax[cpu]", # Or jax[cuda] if appropriate
+    "jax[cpu]",
     "python-casacore",
     "astropy",
     "tqdm",
-    "typer>=0.12.0",      # Switched from click
-    "hip-cargo",          # Required for decorators
 ]
 
 [project.urls]
@@ -37,7 +47,7 @@ jackknify = "jackknify.cli:app"
 [build-system]
 # NOTE: This uv_build constraint is intentionally aligned with hip-cargo's own pyproject.toml.
 # If you bump uv_build in hip-cargo, update this template constraint to match.
-requires = ["uv_build>=0.8.3,<0.11.0"]
+requires = ["uv_build>=0.8.3,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.ruff]
@@ -46,7 +56,7 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]
-ignore = ["N999",]
+ignore = []
 
 [tool.ruff.format]
 quote-style = "double"
