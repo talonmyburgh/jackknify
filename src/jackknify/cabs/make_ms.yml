@@ -10,9 +10,11 @@ cabs:
       ms-file:
         info:
           Path to create the mock MS.
+        dtype: MS
         required: true
         policies:
           positional: true
+        must_exist: false
       rows:
         info:
           Number of rows in the mock MS.

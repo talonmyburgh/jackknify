@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Annotated, Literal, NewType
 
 import typer
-from hip_cargo import StimelaMeta, stimela_cab, stimela_output
+from hip_cargo import StimelaMeta, parse_upath, stimela_cab, stimela_output
 
 MS = NewType("MS", Path)
 
@@ -19,10 +19,14 @@ MS = NewType("MS", Path)
 )
 def make_ms(
     ms_file: Annotated[
-        str,
+        MS,
         typer.Option(
             ...,
+            parser=parse_upath,
             help="Path to create the mock MS.",
+        ),
+        StimelaMeta(
+            must_exist=False,
         ),
     ],
     rows: Annotated[
