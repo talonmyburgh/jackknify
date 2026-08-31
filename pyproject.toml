@@ -53,6 +53,11 @@ build-backend = "uv_build"
 [tool.ruff]
 line-length = 120
 target-version = "py310"
+# "*.md": ruff 0.16+ formats Python code blocks embedded in Markdown; our
+# README/CLAUDE.md snippets are illustrative fragments that ruff would rewrite
+# into standalone-valid but misleading code. Keep the formatter to real Python
+# files only. Mirrors hip-cargo's own ruff configuration.
+extend-exclude = ["*.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W"]

@@ -28,7 +28,7 @@ make-noise-map:
       info: "Random seed for realisations."
       dtype: int
       default: 42
-  
+
   outputs:
     outdir:
       info: "The directory to which all output images will be written"
@@ -50,7 +50,7 @@ make-noise-map:
     var: jack_idx
     over: n_samples
     scatter: 4
-  
+
   assign:
     # Set up a base prefix using Stimela macros based on the MS filename
     ms_basename: =STRIPEXT(BASENAME(recipe.ms_file))
