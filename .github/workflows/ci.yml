@@ -65,6 +65,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SKIP_CHECKS: 'false'
+      # Without this, uv honours .python-version (3.11) over the interpreter
+      # setup-python provisioned, and every matrix leg silently runs on 3.11.
+      # UV_PYTHON is the env form of `uv --python` and overrides .python-version.
+      UV_PYTHON: ${{ matrix.python-version }}
     strategy:
       fail-fast: false
       matrix:
