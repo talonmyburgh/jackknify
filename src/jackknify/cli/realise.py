@@ -25,6 +25,9 @@ def realise(
             parser=parse_upath,
             help="Input Measurement Set.",
         ),
+        StimelaMeta(
+            writable=True,
+        ),
     ],
     col: Annotated[
         str,

@@ -14,6 +14,7 @@ cabs:
         required: true
         policies:
           positional: true
+        writable: true
       col:
         info:
           Input data column name.
