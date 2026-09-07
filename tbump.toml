@@ -1,27 +1,66 @@
 [version]
-current = "0.0.0"
+current = "0.2.0"
 
-# Version format: semantic versioning
+# Version format: PEP 440 with optional pre-release and post-release
 regex = '''
   (?P<major>\d+)
   \.
   (?P<minor>\d+)
   \.
   (?P<patch>\d+)
+  (?:
+    (?P<channel>a|b|rc)
+    (?P<release>\d+)
+  )?
+  (?:
+    \.post
+    (?P<post>\d+)
+  )?
   '''
 
+[[field]]
+name = "channel"
+default = ""
+
+[[field]]
+name = "release"
+default = ""
+
+[[field]]
+name = "post"
+default = ""
+
 [git]
-message_template = "Bump version to {new_version}"
+message_template = "chore(release): bump version to {new_version}"
 tag_template = "v{new_version}"
 
-# Hooks to update generated files with new version before committing
-[[before_push]]
-name = "Write release version sentinel for pre-commit hooks"
-cmd = "python -c \"from pathlib import Path; Path('.tbump_version').write_text('{new_version}')\""
+# before_commit hooks run before tbump's version-bump commit.
+# Update container image tag and regenerate cabs with the release version.
+[[before_commit]]
+name = "Update container image tag to release version"
+cmd = "python -c \"import re; p = 'src/jackknify/_container_image.py'; t = open(p).read(); t = re.sub(r'(CONTAINER_IMAGE\\s*=\\s*\\\".*:)[^\\\"]+', r'\\g<1>{new_version}', t); open(p, 'w').write(t)\""
 
-[[before_push]]
-name = "Regenerate cab definitions with new version"
-cmd = "python scripts/generate_cabs.py --version {new_version}"
+[[before_commit]]
+name = "Regenerate cab definitions with release version"
+cmd = "hip-cargo generate-cabs --module 'src/jackknify/cli/*.py' --output-dir src/jackknify/cabs"
+
+[[before_commit]]
+name = "Stage updated cab definitions"
+cmd = "git add src/jackknify/cabs/*.yml"
+
+[[before_commit]]
+name = "Stage _container_image.py with updated container image tag"
+cmd = "git add src/jackknify/_container_image.py"
+
+[[before_commit]]
+name = "Update uv.lock"
+cmd = "uv lock"
+
+[[before_commit]]
+name = "Stage uv.lock"
+cmd = "git add uv.lock"
+
+# No before_push hooks needed — sentinel file workflow removed
 
 # Files to update with the new version
 [[file]]

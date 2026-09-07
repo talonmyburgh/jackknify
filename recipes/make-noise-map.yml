@@ -24,33 +24,43 @@ make-noise-map:
       info: "Number of jackknife realisations."
       dtype: int
       default: 5
+    sample_list:
+      info: "List of sample indices to use for jackknifing. If not provided, will use all n_samples."
+      dtype: list
+      default: =RANGE(current.n_samples)
+      required: false
     seed:
       info: "Random seed for realisations."
       dtype: int
       default: 42
-  
+    mode:
+      info: "Mode of operation. Can be 'column' to create new columns in the MS, or 'copy' to create separate MS files for each realisation."
+      dtype: str
+      default: copy
+      required: false
+
   outputs:
     outdir:
       info: "The directory to which all output images will be written"
       dtype: Directory
-      default: "noise_images"
-      required: false
+      required: true
 
   aliases:
-    prefix:
-    - image.prefix
     size:
     - image.size
     scale:
     - image.scale
     niter:
     - image.niter
+    reorder:
+    - image.reorder
+    temp-dir:
+    - image.temp-dir
 
   for_loop:
     var: jack_idx
-    over: n_samples
-    scatter: 4
-  
+    over: sample_list
+
   assign:
     # Set up a base prefix using Stimela macros based on the MS filename
     ms_basename: =STRIPEXT(BASENAME(recipe.ms_file))
@@ -67,14 +77,14 @@ make-noise-map:
         col: =recipe.data_column
         n-samples: =recipe.n_samples
         seed: =recipe.seed
-        mode: column #this will create new columns in the original MS
+        mode: =recipe.mode
 
     image:
       info: "Iterate over the generated columns and image each realisation."
       cab: wsclean
       params:
         ms: =recipe.ms_file
-        # construct the column string dynamically
+        prefix: =recipe.img_prefix
         column: =recipe.unique_column
 
     compute:
@@ -82,5 +92,4 @@ make-noise-map:
       cab: noise
       params:
         folder-path: =recipe.outdir
-        # Output directly into the outdir
-        out: =recipe.output_img
+        out_cube: =recipe.output_img

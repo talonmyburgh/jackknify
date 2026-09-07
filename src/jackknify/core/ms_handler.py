@@ -25,20 +25,15 @@ class MSWrapper:
         Writes data to a specific column. Creates the column if it doesn't exist
         using the template column description.
         """
+        numpy_data = np.asarray(data)
         with ctab(self.ms_path, readonly=False, ack=False) as t:
             if col_name in t.colnames():
-                t.putcol(col_name, data)
+                t.putcol(col_name, numpy_data)
             else:
                 desc = t.getcoldesc(desc_template_col)
                 desc["name"] = col_name
-                desc["comment"] = "Jackknife_Realization"
-
-                # Handle potential tiled shape issues if present in descriptor
-                if "ndim" in desc and desc["ndim"] == -1:
-                    pass
-
                 t.addcols(desc)
-                t.putcol(col_name, data)
+                t.putcol(col_name, numpy_data)
 
     def create_copy(self, out_path):
         """Creates a full directory copy of the MS."""

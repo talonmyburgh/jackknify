@@ -5,7 +5,7 @@ cabs:
     name: realise
     info:
       Generates jackknife noise realisations from a Measurement Set.
-    image: ghcr.io/talonmyburgh/jackknify:latest
+    image: ghcr.io/talonmyburgh/jackknify:hip-cargo-conversion
     inputs:
       ms-file:
         info:
@@ -14,6 +14,7 @@ cabs:
         required: true
         policies:
           positional: true
+        writable: true
       col:
         info:
           Input data column name.
@@ -39,6 +40,5 @@ cabs:
     outputs:
       out_dir:
         dtype: Directory
-        required: false
         info:
           Output directory (only used if mode is 'copy').

@@ -5,7 +5,7 @@ cabs:
     name: noise
     info:
       Calculates a 'noise' cube (std dev) from a folder of FITS files.
-    image: ghcr.io/talonmyburgh/jackknify:latest
+    image: ghcr.io/talonmyburgh/jackknify:hip-cargo-conversion
     inputs:
       folder-path:
         info:
@@ -14,8 +14,12 @@ cabs:
         required: true
         policies:
           positional: true
+      out-cube:
+        info:
+          The resulting noise cube FITS file.
+        dtype: Optional[File]
     outputs:
-      out:
+      out_cube:
         dtype: File
         info:
           The resulting noise cube FITS file.

@@ -1,9 +1,6 @@
-import typer
+"""CLI for jackknify."""
 
-from jackknify.cli.make_test_ms import make_ms
-from jackknify.cli.noise import noise
-from jackknify.cli.onboard import onboard
-from jackknify.cli.realise import realise
+import typer
 
 app = typer.Typer(
     name="jackknify",
@@ -18,9 +15,15 @@ def callback() -> None:
     pass
 
 
+# Register subcommands below. Imports go here (bottom) to avoid circular imports.
+from jackknify.cli.make_ms import make_ms  # noqa: E402
+from jackknify.cli.noise import noise  # noqa: E402
+from jackknify.cli.onboard import onboard  # noqa: E402
+from jackknify.cli.realise import realise  # noqa: E402
+
 app.command(name="realise")(realise)
 app.command(name="noise")(noise)
-app.command(name="make-test-ms")(make_ms)
+app.command(name="make-ms")(make_ms)
 app.command(name="onboard")(onboard)
 
 __all__ = ["app"]

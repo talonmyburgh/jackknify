@@ -17,22 +17,54 @@ The full methodology can be found [here](https://ui.adsabs.harvard.edu/abs/2025A
 Installation
 ============
 
-``jackknify`` itself can be installed through
+``jackknify`` ships in two install modes.
+
+**Lightweight** (default) pulls only ``hip-cargo`` and ``typer``:
 
     pip install jackknify
 
-or alternatively
+Every command still works in this mode — the CLI wrappers dispatch into the
+project's container image (``ghcr.io/talonmyburgh/jackknify``) when the heavy
+dependencies are not importable. This is the right mode for Stimela and for
+machines that only need to launch commands.
 
-    python -m pip install git+https://github.com/Joshiwavm/jackknify
+**Full** adds the runtime dependencies needed to execute natively:
 
-or from the source
+    pip install jackknify[full]
 
-    git clone https://github.com/Joshiwavm/jackknify
+or from source:
+
+    git clone https://github.com/talonmyburgh/jackknify
     cd jackknify
-    pip install -e .
+    uv sync --all-extras
 
+Use ``--backend native`` to force in-process execution and surface an
+``ImportError`` rather than falling back to a container, or ``--backend
+docker`` / ``apptainer`` / ``podman`` / ``singularity`` to skip the native
+attempt entirely.
 
-## Dependancies
+Command-line interface
+======================
+
+Commands are defined once and exposed both as a CLI and as Stimela cabs
+(generated into ``src/jackknify/cabs/``). Required parameters are passed as
+options rather than positionally:
+
+    jackknify realise --ms-file /path/to/observation.ms --n-samples 5
+    jackknify noise --folder-path noise_images --out noise_cube.fits
+    jackknify make-ms --ms-file mock.ms --rows 100 --chans 16
+
+Path parameters are parsed with hip-cargo's ``parse_upath``, so remote URIs
+(``s3://``, ``gs://``, ``az://``) are accepted at the CLI boundary. Note that
+the ``core`` implementations currently read and write through local filesystem
+calls (``os.listdir``, ``casacore.tables.table``), so **remote paths are not
+yet supported end to end** — pass local paths for now.
+
+**Note:** prior to the hip-cargo 0.3.0 conversion, ``ms-file`` and
+``folder-path`` were positional arguments and ``make-ms`` was called
+``make-test-ms``.
+
+## Dependencies
 
 ``jackknify`` uses ``casatask`` and ``casatools`` to interface with CASA measurements. ``casatask`` and ``casatools`` requires ``casadata`` to load. Sadly, this is a  ~350 MB sized file making the installment a bit slow. Further, when performing line searches, we make use of the package ``interferopy``, which is a Python-based package for common tasks used in the observational radio/mm interferometry data analysis.
 
