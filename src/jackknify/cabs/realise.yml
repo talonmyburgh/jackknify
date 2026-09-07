@@ -29,10 +29,6 @@ cabs:
           Random seed.
         dtype: int
         default: 42
-      mode:
-        info:
-          Output mode - column (modify in-place) or copy (new files).
-        default: column
       out-dir:
         info:
           Output directory (only for copy mode).
