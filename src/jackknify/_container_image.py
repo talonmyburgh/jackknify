@@ -1,4 +1,4 @@
-CONTAINER_IMAGE = "ghcr.io/talonmyburgh/jackknify:hip-cargo-conversion"
+CONTAINER_IMAGE = "ghcr.io/talonmyburgh/jackknify:latest"
 
 # Optional GPU passthrough for the container-fallback path.
 # Set GPU = True for a CUDA/GPU image, or "auto" to request a GPU only
