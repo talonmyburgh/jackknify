@@ -43,12 +43,9 @@ make-noise-map:
     outdir:
       info: "The directory to which all output images will be written"
       dtype: Directory
-      default: "noise_images"
-      required: false
+      required: true
 
   aliases:
-    prefix:
-    - image.prefix
     size:
     - image.size
     scale:
@@ -63,7 +60,6 @@ make-noise-map:
   for_loop:
     var: jack_idx
     over: sample_list
-    scatter: 4
 
   assign:
     # Set up a base prefix using Stimela macros based on the MS filename
@@ -88,7 +84,7 @@ make-noise-map:
       cab: wsclean
       params:
         ms: =recipe.ms_file
-        # construct the column string dynamically
+        prefix: =recipe.img_prefix
         column: =recipe.unique_column
 
     compute:
@@ -96,5 +92,4 @@ make-noise-map:
       cab: noise
       params:
         folder-path: =recipe.outdir
-        # Output directly into the outdir
-        out: =recipe.output_img
+        out_cube: =recipe.output_img

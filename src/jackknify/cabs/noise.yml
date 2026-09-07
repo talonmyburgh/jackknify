@@ -14,14 +14,12 @@ cabs:
         required: true
         policies:
           positional: true
-      out:
+      out-cube:
         info:
-          Output filename.
-        dtype: File
-        default: noise_cube.fits
+          The resulting noise cube FITS file.
+        dtype: Optional[File]
     outputs:
       out_cube:
         dtype: File
         info:
           The resulting noise cube FITS file.
-        implicit: '{out}'

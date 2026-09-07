@@ -16,7 +16,6 @@ File = NewType("File", Path)
     dtype="File",
     name="out_cube",
     info="The resulting noise cube FITS file.",
-    implicit="{out}",
 )
 def noise(
     folder_path: Annotated[
@@ -27,13 +26,13 @@ def noise(
             help="Folder containing input FITS files.",
         ),
     ],
-    out: Annotated[
-        File,
+    out_cube: Annotated[
+        File | None,
         typer.Option(
             parser=parse_upath,
-            help="Output filename.",
+            help="The resulting noise cube FITS file.",
         ),
-    ] = "noise_cube.fits",
+    ] = None,
     backend: Annotated[
         Literal["auto", "native", "apptainer", "singularity", "docker", "podman"],
         typer.Option(
@@ -65,7 +64,7 @@ def noise(
                 noise,
                 dict(
                     folder_path=folder_path,
-                    out=out,
+                    out_cube=out_cube,
                 ),
             )
 
@@ -75,7 +74,7 @@ def noise(
             # Call the core function with all parameters
             noise_core(
                 folder_path,
-                out=out,
+                out_cube=out_cube,
             )
             return
         except ImportError:
@@ -94,7 +93,7 @@ def noise(
         noise,
         dict(
             folder_path=folder_path,
-            out=out,
+            out_cube=out_cube,
         ),
         image=image,
         backend=backend,
