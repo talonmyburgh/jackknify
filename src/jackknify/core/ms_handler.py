@@ -25,9 +25,8 @@ class MSWrapper:
         Writes data to a specific column. Creates the column if it doesn't exist
         using the template column description.
         """
+        numpy_data = np.asarray(data)
         with ctab(self.ms_path, readonly=False, ack=False) as t:
-            numpy_data = np.asarray(data)
-
             if col_name in t.colnames():
                 t.putcol(col_name, numpy_data)
             else:

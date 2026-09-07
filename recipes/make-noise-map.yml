@@ -24,6 +24,11 @@ make-noise-map:
       info: "Number of jackknife realisations."
       dtype: int
       default: 5
+    sample_list:
+      info: "List of sample indices to use for jackknifing. If not provided, will use all n_samples."
+      dtype: list
+      default: =RANGE(current.n_samples)
+      required: false
     seed:
       info: "Random seed for realisations."
       dtype: int
@@ -45,10 +50,12 @@ make-noise-map:
     - image.scale
     niter:
     - image.niter
+    reorder:
+    - image.reorder
 
   for_loop:
     var: jack_idx
-    over: n_samples
+    over: sample_list
     scatter: 4
 
   assign:
