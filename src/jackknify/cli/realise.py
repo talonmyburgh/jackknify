@@ -47,12 +47,6 @@ def realise(
             help="Random seed.",
         ),
     ] = 42,
-    mode: Annotated[
-        str,
-        typer.Option(
-            help="Output mode - column (modify in-place) or copy (new files).",
-        ),
-    ] = "column",
     out_dir: Annotated[
         Directory | None,
         typer.Option(
@@ -94,7 +88,6 @@ def realise(
                     col=col,
                     n_samples=n_samples,
                     seed=seed,
-                    mode=mode,
                     out_dir=out_dir,
                 ),
             )
@@ -108,7 +101,6 @@ def realise(
                 col=col,
                 n_samples=n_samples,
                 seed=seed,
-                mode=mode,
                 out_dir=out_dir,
             )
             return
@@ -131,7 +123,6 @@ def realise(
             col=col,
             n_samples=n_samples,
             seed=seed,
-            mode=mode,
             out_dir=out_dir,
         ),
         image=image,
